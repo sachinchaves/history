@@ -1,5 +1,5 @@
 # history-app
-Photo gallery presentation layer (frontend). See [history-api for the backend including APIs](../api)
+Photo gallery presentation layer (frontend). See [history-api for the backend including APIs](../api) hello
 
 ## Environment configuration
 1. Create a `.env` file in the project root (not the `/ui` folder but `/`)
