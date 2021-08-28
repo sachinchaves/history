@@ -10,6 +10,7 @@ const Nearby = () => {
   const [img, setImg] = useState();
   const [imgLg, setImgLg] = useState();
   const [unClicked, setunClicked] = useState();
+  const [error, setError] = useState();
   const longtitude = lon;
   const latitude = lat;
   
@@ -19,16 +20,22 @@ const Nearby = () => {
   }
   
   useEffect(()=>{
-    const fetchImage = async () => {
-      const response = await fetch(`/api/flickr?lat=${longtitude}&lon=${latitude}`);
-      const result = await response.json();
-      setImg(result.photos.photo.map((photo, index) => (
-          <img src={`https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_s.jpg`} onClick={() => handleClick(`https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}`)}/>
-        )));
-        setunClicked(true);
-      // setImgLg(<img src=`https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`>)
+    try{
+      const fetchImage = async () => {
+        const response = await fetch(`/api/flickr?lat=${longtitude}&lon=${latitude}`);
+        const result = await response.json();
+        setImg(result.photos.photo.map((photo, index) => (
+            <img src={`https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_s.jpg`} onClick={() => handleClick(`https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}`)}/>
+          )));
+          setunClicked(true);
+        // setImgLg(<img src=`https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_b.jpg`>)
+      }
+      fetchImage();
+    }catch {
+      setError(true);
     }
-    fetchImage();
+    
+    setError(false);
   }, [])
 
   return (
@@ -40,6 +47,9 @@ const Nearby = () => {
       <div>
       {unClicked && (
         <p>Please click on the image below</p>
+      )}
+      {error && (
+        <p>Something went wrong. Please try again later</p>
       )}
         {img}
         
